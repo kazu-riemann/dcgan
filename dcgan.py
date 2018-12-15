@@ -119,9 +119,14 @@ def train_model(generator, discriminator, gan, \
             print('discriminator loss:', d_loss)
             print('adversarial loss:', a_loss)
 
+            #.. output generated image
             img = image.array_to_img(generated_images[0] * 255., scale=False)
             img.save(os.path.join(save_dir,
                                   'generated_cat' + str(step) + '.png'))
+            #.. output real image
+            img = image.array_to_img(real_images[0] * 255., scale=False)
+            img.save(os.path.join(save_dir,
+                                  'real_cat' + str(step) + '.png'))
 
 if __name__ == "__main__":
     #.. network size settings
