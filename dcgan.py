@@ -2,6 +2,7 @@ import keras
 from keras import layers
 import numpy as np
 
+#__ create generator model
 def generator(latent_dim, channels):
     generator_input = keras.Input(shape=(latent_dim,))
 
@@ -24,6 +25,7 @@ def generator(latent_dim, channels):
 
     return generator
 
+#__ create discriminator
 def discriminator(height, width, channels):
     discriminator_input = \
         layers.Input(shape=(height, width, channels))
@@ -54,8 +56,8 @@ def discriminator(height, width, channels):
         loss='binary_crossentropy')
 
     return discriminator
-
-def adversarial_network(generator, discriminator):
+#__ create GAN model combining generator and discriminator
+def adversarial_network(generator, discriminator, latent_dim):
     discriminator.trainable = False
     gan_input = keras.Input(shape=(latent_dim,))
     gan_output = discriminator(generator(gan_input))
@@ -69,7 +71,8 @@ def adversarial_network(generator, discriminator):
 
 #__ train model using cifar10 dataset
 def train_model(generator, discriminator, gan, \
-                    iterations, batch_size, save_dir):
+                height, width, channels, latent_dim, \
+                iterations, batch_size, save_dir):
     import os
     from keras.preprocessing import image
 
@@ -138,12 +141,13 @@ if __name__ == "__main__":
     #.. create model
     gen = generator(latent_dim, channels)
     dis = discriminator(height, width, channels)    
-    gan = adversarial_network(gen, dis)
+    gan = adversarial_network(gen, dis, latent_dim)
 
     #.. train model
     iterations = 10000
     batch_size = 20
     save_dir = '.'
 
-    train_model(gen, dis, gan, iterations, \
-                    batch_size, save_dir)
+    train_model(gen, dis, gan, \
+                height, width, channels, latent_dim, \
+                iterations, batch_size, save_dir)
