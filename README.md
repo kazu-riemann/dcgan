@@ -6,6 +6,7 @@ This is an implementation of GAN [[1]] using [[2]] as a reference.
 3. Output real images and generated images every 100 epoch
 
 ## Requirements
+* tensorflow==1.12.0
 * Keras==2.2.4
 * numpy==1.15.4
 * h5py==2.8.0
